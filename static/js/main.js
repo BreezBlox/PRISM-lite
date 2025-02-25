@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Set today's date by default
     document.getElementById('date').valueAsDate = new Date();
-    
+
     // Initialize the delay chart
     let delayChart = new Chart(document.getElementById('delayChart'), {
         type: 'bar',
@@ -35,16 +35,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     // Load initial data
     loadDelays();
-    
+
     // Form submission handler
     document.getElementById('delayForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         const formData = new FormData(this);
-        
+
         fetch('/submit_delay', {
             method: 'POST',
             body: formData
@@ -60,7 +60,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
+    // Handle Other department input
+    const otherCheckbox = document.getElementById('dept_Other');
+    if (otherCheckbox) {
+        otherCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                const otherDept = prompt('Please enter the department name:');
+                if (otherDept) {
+                    this.value = otherDept;
+                } else {
+                    this.checked = false;
+                }
+            }
+        });
+    }
+
     // Ensure only one department checkbox can be selected at a time
     const deptCheckboxes = document.querySelectorAll('.dept-checkbox');
     deptCheckboxes.forEach(checkbox => {
@@ -93,7 +108,7 @@ function updateDepartmentTables(data) {
 
         const section = document.createElement('div');
         section.className = 'department-table';
-        
+
         section.innerHTML = `
             <div class="department-header">
                 <h4>${dept} <span class="badge bg-primary">${totalTime.toFixed(1)} hours</span></h4>
@@ -132,7 +147,7 @@ function updateDepartmentTables(data) {
                 </table>
             </div>
         `;
-        
+
         container.appendChild(section);
     }
 }
