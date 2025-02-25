@@ -27,13 +27,19 @@ def index():
 def submit_delay():
     try:
         data = request.form
-        
+
         # Determine origin department
         checked_depts = [dept for dept in DEPARTMENTS if data.get(f'dept_{dept}') == 'on']
-        if checked_depts:
+        if data.get('dept_Other') == 'on' and data.get('dept_Other_value'):
+            # Use the custom department name if "Other" is selected
+            origin_dept = data.get('dept_Other_value')
+            manually_classified = True
+        elif checked_depts:
+            # Use the first checked department if any are selected
             origin_dept = checked_depts[0]
             manually_classified = True
         else:
+            # Use AI classification if no department is manually selected
             origin_dept = classify_department(data['description'])
             manually_classified = False
 
@@ -47,10 +53,10 @@ def submit_delay():
             origin_department=origin_dept,
             manually_classified=manually_classified
         )
-        
+
         db.session.add(delay)
         db.session.commit()
-        
+
         return jsonify({'status': 'success'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})

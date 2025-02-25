@@ -44,6 +44,11 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
 
         const formData = new FormData(this);
+        const otherCheckbox = document.getElementById('dept_Other');
+
+        if (otherCheckbox && otherCheckbox.checked && otherCheckbox.value) {
+            formData.append('dept_Other_value', otherCheckbox.value);
+        }
 
         fetch('/submit_delay', {
             method: 'POST',
