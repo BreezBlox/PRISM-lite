@@ -1,0 +1,28 @@
+- an app used to submit production delays with information such as:
+    - job number and or part number
+    - date
+    - department delay was discovered in(engineering, supply chain, metal shop, pre-assembly, bodywork, paint, final assembly, sign-shop/graphic design, and shipping. be sure to have the depts in this order from left to right in the graph)
+    - a description of the delay
+    - total time of the delay
+- the result of the submission(s) results in generating a section grouping all of the submissions into their corresponding “Department Origin”. however, during this sorting process there is an LLM that determines which department is responsible for the delay based on the description of the delay submitted(which can be different from the dept the delay was actually found/recorded in).
+    - this section will be in a table form showing the following information from left to right within each department:
+        - date
+        - job number
+        - part number
+        - description
+        - delay time
+    - also, to the right of head department header will has the sum total of the delays within that department.
+    - there will also be a “contest” button used to change the “Department Origin” of the delay along with a description for contesting. and the once updated the section will be updated.
+- below this section is a bar graph with the stats from the department origin section
+- below this section is a button to print the department origin section into CSV
+- session-based storage
+- need to incorporate a free LLM that would work best to identify which department a delay originated in based off the description in the submission
+    - i dont want to train or use locally
+- back-end python and SQlite
+- font-end html, jscript, css
+- when you click on the date, it automatically adds todays date
+- there are check boxes for each dept below the delay time, if any of these are checked then make the department origination as marked, otherwise fallback to using the LLM to determine the origin department using the description in the submission.
+- allow decimal inputs for delay time
+- in the department origin section, make a column in the table between date and job number to include which dept the delay was discovered in.
+- when the delay is contested, be sure to add the note and reason for the contest.
+- I want to be able to simply
