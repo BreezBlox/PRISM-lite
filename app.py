@@ -27,10 +27,13 @@ def index():
 def submit_delay():
     try:
         data = request.form
-        
+
         # Determine origin department
         checked_depts = [dept for dept in DEPARTMENTS if data.get(f'dept_{dept}') == 'on']
-        if checked_depts:
+        if data.get('dept_Other') == 'on' and data.get('dept_Other_value'):
+            origin_dept = data.get('dept_Other_value')
+            manually_classified = True
+        elif checked_depts:
             origin_dept = checked_depts[0]
             manually_classified = True
         else:
@@ -47,10 +50,10 @@ def submit_delay():
             origin_department=origin_dept,
             manually_classified=manually_classified
         )
-        
+
         db.session.add(delay)
         db.session.commit()
-        
+
         return jsonify({'status': 'success'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
@@ -96,6 +99,15 @@ def export_csv():
         as_attachment=True,
         download_name='delays.csv'
     )
+
+@app.route('/clear_data', methods=['POST'])
+def clear_data():
+    try:
+        Delay.query.delete()
+        db.session.commit()
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
 
 with app.app_context():
     db.create_all()

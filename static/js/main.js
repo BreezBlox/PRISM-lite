@@ -40,26 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
     loadDelays();
 
     // Form submission handler
-    document.getElementById('delayForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    document.getElementById('delayForm').addEventListener('submit', submitForm);
 
-        const formData = new FormData(this);
-
-        fetch('/submit_delay', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                this.reset();
-                document.getElementById('date').valueAsDate = new Date();
-                loadDelays();
-            } else {
-                alert('Error submitting delay: ' + data.message);
-            }
-        });
-    });
 
     // Handle Other department input
     const otherCheckbox = document.getElementById('dept_Other');
@@ -87,7 +69,36 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Add clear data button functionality
+    document.getElementById('clearDataButton').addEventListener('click', clearData);
 });
+
+function submitForm(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    // Handle Other department
+    const otherCheckbox = document.getElementById('dept_Other');
+    if (otherCheckbox && otherCheckbox.checked && otherCheckbox.value) {
+        formData.append('dept_Other_value', otherCheckbox.value);
+    }
+
+    fetch('/submit_delay', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            this.reset();
+            document.getElementById('date').valueAsDate = new Date();
+            loadDelays();
+        } else {
+            alert('Error submitting delay: ' + data.message);
+        }
+    });
+}
 
 function loadDelays() {
     fetch('/get_delays')
@@ -118,7 +129,7 @@ function updateDepartmentTables(data) {
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Discovery Dept</th>
+                            <th>Discovered in</th>
                             <th>Job Number</th>
                             <th>Part Number</th>
                             <th>Description</th>
@@ -201,4 +212,20 @@ function exportCSV() {
 function closeHelpBubble() {
     document.getElementById('helpBubble').classList.add('hidden');
     localStorage.setItem('helpBubbleDismissed', 'true');
+}
+
+function clearData() {
+    if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+        fetch('/clear_data', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                loadDelays();
+            } else {
+                alert('Error clearing data: ' + data.message);
+            }
+        });
+    }
 }
