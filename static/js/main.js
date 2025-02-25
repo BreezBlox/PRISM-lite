@@ -118,7 +118,7 @@ function updateDepartmentTables(data) {
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Discovery Dept</th>
+                            <th>Discovered in</th>
                             <th>Job Number</th>
                             <th>Part Number</th>
                             <th>Description</th>
@@ -201,4 +201,20 @@ function exportCSV() {
 function closeHelpBubble() {
     document.getElementById('helpBubble').classList.add('hidden');
     localStorage.setItem('helpBubbleDismissed', 'true');
+}
+
+function clearAllData() {
+    if (confirm('Are you sure you want to clear all delay data? This cannot be undone.')) {
+        fetch('/clear_data', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                loadDelays();  // Refresh the display
+            } else {
+                alert('Error clearing data: ' + data.message);
+            }
+        });
+    }
 }

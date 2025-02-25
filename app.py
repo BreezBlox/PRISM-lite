@@ -97,5 +97,14 @@ def export_csv():
         download_name='delays.csv'
     )
 
+@app.route('/clear_data', methods=['POST'])
+def clear_data():
+    try:
+        db.session.query(Delay).delete()
+        db.session.commit()
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
+
 with app.app_context():
     db.create_all()
