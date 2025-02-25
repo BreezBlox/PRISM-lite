@@ -65,15 +65,20 @@ def submit_delay():
 def get_delays():
     delays = Delay.query.all()
     delays_by_dept = {}
-    
-    for dept in DEPARTMENTS:
+
+    # Get all unique departments from the database
+    all_departments = set(DEPARTMENTS)
+    for delay in delays:
+        all_departments.add(delay.origin_department)
+
+    for dept in sorted(all_departments):
         dept_delays = [d.to_dict() for d in delays if d.origin_department == dept]
         total_time = sum(d['delay_time'] for d in dept_delays)
         delays_by_dept[dept] = {
             'delays': dept_delays,
             'total_time': total_time
         }
-    
+
     return jsonify(delays_by_dept)
 
 @app.route('/contest_delay', methods=['POST'])
