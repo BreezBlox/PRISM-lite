@@ -8,7 +8,7 @@ DEPARTMENTS = [
     'Bodywork',
     'Paint',
     'Final Assembly',
-    'Sign-Shop/Graphic Design',
+    'Sign-Shop',
     'Shipping'
 ]
 
