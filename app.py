@@ -27,19 +27,13 @@ def index():
 def submit_delay():
     try:
         data = request.form
-
+        
         # Determine origin department
         checked_depts = [dept for dept in DEPARTMENTS if data.get(f'dept_{dept}') == 'on']
-        if data.get('dept_Other') == 'on' and data.get('dept_Other_value'):
-            # Use the custom department name if "Other" is selected
-            origin_dept = data.get('dept_Other_value')
-            manually_classified = True
-        elif checked_depts:
-            # Use the first checked department if any are selected
+        if checked_depts:
             origin_dept = checked_depts[0]
             manually_classified = True
         else:
-            # Use AI classification if no department is manually selected
             origin_dept = classify_department(data['description'])
             manually_classified = False
 
@@ -53,10 +47,10 @@ def submit_delay():
             origin_department=origin_dept,
             manually_classified=manually_classified
         )
-
+        
         db.session.add(delay)
         db.session.commit()
-
+        
         return jsonify({'status': 'success'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
@@ -65,20 +59,15 @@ def submit_delay():
 def get_delays():
     delays = Delay.query.all()
     delays_by_dept = {}
-
-    # Get all unique departments from the database
-    all_departments = set(DEPARTMENTS)
-    for delay in delays:
-        all_departments.add(delay.origin_department)
-
-    for dept in sorted(all_departments):
+    
+    for dept in DEPARTMENTS:
         dept_delays = [d.to_dict() for d in delays if d.origin_department == dept]
         total_time = sum(d['delay_time'] for d in dept_delays)
         delays_by_dept[dept] = {
             'delays': dept_delays,
             'total_time': total_time
         }
-
+    
     return jsonify(delays_by_dept)
 
 @app.route('/contest_delay', methods=['POST'])
@@ -107,15 +96,6 @@ def export_csv():
         as_attachment=True,
         download_name='delays.csv'
     )
-
-@app.route('/clear_data', methods=['POST'])
-def clear_data():
-    try:
-        db.session.query(Delay).delete()
-        db.session.commit()
-        return jsonify({'status': 'success'})
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)})
 
 with app.app_context():
     db.create_all()
