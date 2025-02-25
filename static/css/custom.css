@@ -1,0 +1,30 @@
+.dept-checkboxes {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 4px;
+}
+
+.department-table {
+    margin-bottom: 2rem;
+}
+
+.department-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.contest-btn {
+    cursor: pointer;
+}
+
+.table-responsive {
+    margin-bottom: 1rem;
+}
+
+.chart-container {
+    height: 400px;
+}
