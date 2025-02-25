@@ -28,3 +28,53 @@
 .chart-container {
     height: 400px;
 }
+
+/* Help Bubble Styles */
+.help-bubble {
+    position: fixed;
+    right: 20px;
+    top: 80px;
+    width: 300px;
+    background: var(--bs-dark);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.help-bubble::before {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: -10px;
+    border-width: 0 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent var(--bs-dark) transparent;
+}
+
+.help-bubble-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.help-bubble-close {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.help-bubble-close:hover {
+    opacity: 1;
+}
+
+.help-bubble ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.help-bubble.hidden {
+    display: none;
+}

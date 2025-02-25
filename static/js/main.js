@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Check if first visit
+    if (!localStorage.getItem('helpBubbleDismissed')) {
+        document.getElementById('helpBubble').classList.remove('hidden');
+    } else {
+        document.getElementById('helpBubble').classList.add('hidden');
+    }
+
     // Set today's date by default
     document.getElementById('date').valueAsDate = new Date();
     
@@ -28,10 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-
+    
     // Load initial data
     loadDelays();
-
+    
     // Form submission handler
     document.getElementById('delayForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -53,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
+    
     // Ensure only one department checkbox can be selected at a time
     const deptCheckboxes = document.querySelectorAll('.dept-checkbox');
     deptCheckboxes.forEach(checkbox => {
@@ -174,4 +181,9 @@ function submitContest() {
 
 function exportCSV() {
     window.location.href = '/export_csv';
+}
+
+function closeHelpBubble() {
+    document.getElementById('helpBubble').classList.add('hidden');
+    localStorage.setItem('helpBubbleDismissed', 'true');
 }

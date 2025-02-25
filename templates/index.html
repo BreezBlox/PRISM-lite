@@ -1,6 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Help Bubble -->
+<div class="help-bubble" id="helpBubble">
+    <div class="help-bubble-header">
+        <h6 class="mb-0">Welcome to Production Delay Tracker!</h6>
+        <i class="bi bi-x-lg help-bubble-close" onclick="closeHelpBubble()"></i>
+    </div>
+    <div class="help-bubble-content">
+        <p class="small mb-2">This app helps track and analyze production delays:</p>
+        <ul class="small">
+            <li>Submit delays with job details, timing, and descriptions</li>
+            <li>AI automatically determines the responsible department</li>
+            <li>View delays grouped by department with total impact</li>
+            <li>Contest department assignments if needed</li>
+            <li>Export data to CSV for further analysis</li>
+        </ul>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-12">
         <div class="card mb-4">
@@ -34,12 +52,12 @@
                             </select>
                         </div>
                     </div>
-
+                    
                     <div class="mb-3">
                         <label for="description">Description of Delay</label>
                         <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                     </div>
-
+                    
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="delay_time">Delay Time (hours)</label>
@@ -57,7 +75,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
