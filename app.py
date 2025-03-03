@@ -1,10 +1,11 @@
 import os
 from datetime import datetime
 import pandas as pd
+import csv
+import io
 from flask import Flask, render_template, request, jsonify, session, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
-import io
 from config import DEPARTMENTS, DATABASE_URL
 from utils import classify_department
 
@@ -89,9 +90,39 @@ def contest_delay():
 @app.route('/export_csv')
 def export_csv():
     delays = Delay.query.all()
-    df = pd.DataFrame([d.to_dict() for d in delays])
     output = io.StringIO()
-    df.to_csv(output, index=False)
+    writer = csv.writer(output)
+
+    # Group delays by department
+    delays_by_dept = {}
+    dept_totals = {}
+
+    for dept in DEPARTMENTS:
+        dept_delays = [d for d in delays if d.origin_department == dept]
+        delays_by_dept[dept] = dept_delays
+        dept_totals[dept] = sum(d.delay_time for d in dept_delays)
+
+    for dept in DEPARTMENTS:
+        # Write department header with total hours
+        writer.writerow(['', '', '', '', dept, f'{dept_totals[dept]:.1f}'])
+
+        # Write column headers
+        writer.writerow(['Date', 'Discovered in', 'Job#', 'Part#', dept, 'Hrs'])
+
+        # Write department delays
+        for delay in delays_by_dept[dept]:
+            writer.writerow([
+                delay.date.strftime('%d-%m'),  # Day-Month only
+                delay.discovery_department,
+                delay.job_number,
+                delay.part_number or '',
+                delay.description,
+                f'{delay.delay_time:.1f}'
+            ])
+
+        # Add blank row between departments
+        writer.writerow([])
+
     output.seek(0)
     return send_file(
         io.BytesIO(output.getvalue().encode('utf-8')),
