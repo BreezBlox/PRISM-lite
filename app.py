@@ -94,7 +94,7 @@ def export_csv():
     writer = csv.writer(output)
 
     # Write headers
-    headers = ['Date', 'Discovered in', 'Job#', 'Part#', 'Department', 'Hrs', 'Total Hrs']
+    headers = ['Date', 'Discovered in', 'Job#', 'Part#', 'Department', 'Description', 'Hrs']
     writer.writerow(headers)
 
     # Group delays by department
@@ -110,15 +110,18 @@ def export_csv():
     # Write data for each department
     for dept, data in delays_by_dept.items():
         if data['delays']:  # Only write departments that have delays
+            # Write department header with total hours
+            writer.writerow([dept + f" - total hrs: {data['total_time']:.1f}"])
+
             for delay in data['delays']:
                 row = [
                     delay.date.strftime('%d-%m'),  # Day and month only
                     delay.discovery_department,
                     delay.job_number,
                     delay.part_number or '',
-                    dept,  # Department name as the header
-                    f"{delay.delay_time:.1f}",
-                    f"{data['total_time']:.1f}"  # Total hours for department
+                    dept,
+                    delay.description,
+                    f"{delay.delay_time:.1f}"
                 ]
                 writer.writerow(row)
             # Add a blank row between departments for better readability
