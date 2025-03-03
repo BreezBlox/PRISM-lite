@@ -103,11 +103,11 @@ def export_csv():
         dept_totals[dept] = sum(d.delay_time for d in dept_delays)
 
     for dept in DEPARTMENTS:
-        # Write department header with total hours
+        # Write department header
         writer.writerow(['', '', '', '', dept, f'{dept_totals[dept]:.1f}'])
 
         # Write column headers
-        writer.writerow(['Date', 'Discovered in', 'Job#', 'Part#', dept, 'Hrs'])
+        writer.writerow(['Date', 'Discovered in', 'Job#', 'Part#', 'Description', f'{dept_totals[dept]:.1f}'])
 
         # Write department delays
         for delay in delays_by_dept[dept]:
