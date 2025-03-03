@@ -89,52 +89,10 @@ def contest_delay():
 @app.route('/export_csv')
 def export_csv():
     delays = Delay.query.all()
+    df = pd.DataFrame([d.to_dict() for d in delays])
     output = io.StringIO()
-    csv_writer = pd.DataFrame()
-
-    # Group delays by department and create separate dataframes
-    for dept in DEPARTMENTS:
-        dept_delays = [d for d in delays if d.origin_department == dept]
-        if not dept_delays:
-            continue
-
-        # Calculate total hours for this department
-        dept_total = sum(d.delay_time for d in dept_delays)
-
-        # Create DataFrame for this department
-        df_dept = pd.DataFrame([{
-            'date': d.date.strftime('%d-%m'),
-            'discovered in': d.discovery_department,
-            'job#': d.job_number,
-            'part#': d.part_number or '',
-            dept: d.description,
-            'hrs': d.delay_time
-        } for d in dept_delays])
-
-        # Add header row with department total
-        header_df = pd.DataFrame([{
-            'date': 'date',
-            'discovered in': 'discovered in',
-            'job#': 'job#',
-            'part#': 'part#',
-            dept: dept,
-            'hrs': 'hrs',
-            'total': f'{dept_total:.1f}'
-        }])
-
-        # Combine header and data
-        df_dept = pd.concat([header_df, df_dept], ignore_index=True)
-
-        # Add empty row between departments
-        if not csv_writer.empty:
-            csv_writer = pd.concat([csv_writer, pd.DataFrame([{}])], ignore_index=True)
-
-        csv_writer = pd.concat([csv_writer, df_dept], ignore_index=True)
-
-    # Write to string buffer
-    csv_writer.to_csv(output, index=False)
+    df.to_csv(output, index=False)
     output.seek(0)
-
     return send_file(
         io.BytesIO(output.getvalue().encode('utf-8')),
         mimetype='text/csv',
