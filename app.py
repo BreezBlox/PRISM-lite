@@ -89,16 +89,52 @@ def contest_delay():
 @app.route('/export_csv')
 def export_csv():
     delays = Delay.query.all()
-    df = pd.DataFrame([d.to_dict() for d in delays])
-    output = io.StringIO()
-    df.to_csv(output, index=False)
-    output.seek(0)
-    return send_file(
-        io.BytesIO(output.getvalue().encode('utf-8')),
-        mimetype='text/csv',
-        as_attachment=True,
-        download_name='delays.csv'
-    )
+    departments_data = {}
+
+    # Group delays by department
+    for dept in DEPARTMENTS:
+        dept_delays = [d for d in delays if d.origin_department == dept]
+        if dept_delays:
+            # Create DataFrame for this department
+            df_data = {
+                'date': [d.date.strftime('%d-%m') for d in dept_delays],
+                'discovered in': [d.discovery_department for d in dept_delays],
+                'job#': [d.job_number for d in dept_delays],
+                'part#': [d.part_number for d in dept_delays],
+                dept: [d.description for d in dept_delays],  # Department name as column header
+                'hrs': [d.delay_time for d in dept_delays]
+            }
+            departments_data[dept] = pd.DataFrame(df_data)
+
+    # Combine all department data
+    if departments_data:
+        # Create output buffer
+        output = io.StringIO()
+        first_dept = True
+
+        for dept, df in departments_data.items():
+            if not first_dept:
+                output.write('\n')  # Add blank line between departments
+            first_dept = False
+
+            # Write the data for this department
+            df.to_csv(output, index=False)
+
+        output.seek(0)
+        return send_file(
+            io.BytesIO(output.getvalue().encode('utf-8')),
+            mimetype='text/csv',
+            as_attachment=True,
+            download_name='delays.csv'
+        )
+    else:
+        # Return empty CSV if no data
+        return send_file(
+            io.BytesIO('No data available'.encode('utf-8')),
+            mimetype='text/csv',
+            as_attachment=True,
+            download_name='delays.csv'
+        )
 
 @app.route('/clear_data', methods=['POST'])
 def clear_data():
