@@ -5,7 +5,6 @@ from flask import Flask, render_template, request, jsonify, session, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 import io
-import csv
 from config import DEPARTMENTS, DATABASE_URL
 from utils import classify_department
 
@@ -90,50 +89,9 @@ def contest_delay():
 @app.route('/export_csv')
 def export_csv():
     delays = Delay.query.all()
-    delays_by_dept = {}
-
-    # Group delays by department and calculate totals
-    for dept in DEPARTMENTS:
-        dept_delays = [d for d in delays if d.origin_department == dept]
-        total_time = sum(d.delay_time for d in dept_delays)
-        delays_by_dept[dept] = {
-            'delays': dept_delays,
-            'total_time': total_time
-        }
-
-    # Create the CSV data
+    df = pd.DataFrame([d.to_dict() for d in delays])
     output = io.StringIO()
-    csvwriter = csv.writer(output)
-
-    # Write headers
-    headers = ['date', 'discovered in', 'job#', 'part#', 'description', 'hrs', f'total - {delays_by_dept[DEPARTMENTS[0]]["total_time"]:.1f}']
-    csvwriter.writerow(headers)
-
-    # Write data for each department
-    for dept in DEPARTMENTS:
-        dept_data = delays_by_dept[dept]
-
-        # Write department name and total
-        if dept != DEPARTMENTS[0]:  # Skip for first department as it's in header
-            empty_row = [''] * 6 + [f'total - {dept_data["total_time"]:.1f}']
-            csvwriter.writerow(empty_row)
-
-        # Write delays for this department
-        for delay in dept_data['delays']:
-            row = [
-                delay.date.strftime('%d/%m'),  # Date format: day/month
-                delay.discovery_department,
-                delay.job_number,
-                delay.part_number or '',
-                delay.description,
-                f'{delay.delay_time:.1f}'
-            ]
-            csvwriter.writerow(row)
-
-        # Add blank row between departments
-        if dept != DEPARTMENTS[-1]:
-            csvwriter.writerow([''] * 7)
-
+    df.to_csv(output, index=False)
     output.seek(0)
     return send_file(
         io.BytesIO(output.getvalue().encode('utf-8')),
