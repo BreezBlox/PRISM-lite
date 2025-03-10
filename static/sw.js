@@ -5,6 +5,8 @@ const urlsToCache = [
   '/',
   '/static/css/custom.css',
   '/static/js/main.js',
+  '/static/icons/icon.svg',
+  '/static/manifest.json',
   'https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css',
   'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
