@@ -1,49 +1,60 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if first visit
-    if (!localStorage.getItem('helpBubbleDismissed')) {
-        document.getElementById('helpBubble').classList.remove('hidden');
-    } else {
-        document.getElementById('helpBubble').classList.add('hidden');
+    // Check if first visit and if helpBubble exists
+    const helpBubble = document.getElementById('helpBubble');
+    if (helpBubble) {
+        if (!localStorage.getItem('helpBubbleDismissed')) {
+            helpBubble.classList.remove('hidden');
+        } else {
+            helpBubble.classList.add('hidden');
+        }
     }
 
-    // Set today's date by default
-    document.getElementById('date').valueAsDate = new Date();
+    // Set today's date by default if the date input exists
+    const dateInput = document.getElementById('date');
+    if (dateInput) {
+        dateInput.valueAsDate = new Date();
+    }
 
-    // Initialize the delay chart
-    let delayChart = new Chart(document.getElementById('delayChart'), {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Total Delay Time (hours)',
-                data: [],
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Hours'
+    // Initialize the delay chart if it exists
+    const chartElement = document.getElementById('delayChart');
+    if (chartElement) {
+        let delayChart = new Chart(chartElement, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Total Delay Time (hours)',
+                    data: [],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hours'
+                        }
                     }
                 }
             }
-        }
-    });
+        });
+    }
 
     // Load initial data
     loadDelays();
 
-    // Form submission handler
-    document.getElementById('delayForm').addEventListener('submit', submitForm);
+    // Form submission handler if form exists
+    const delayForm = document.getElementById('delayForm');
+    if (delayForm) {
+        delayForm.addEventListener('submit', submitForm);
+    }
 
-
-    // Handle Other department input
+    // Handle Other department input if it exists
     const otherCheckbox = document.getElementById('dept_Other');
     if (otherCheckbox) {
         otherCheckbox.addEventListener('change', function() {
@@ -60,18 +71,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Ensure only one department checkbox can be selected at a time
     const deptCheckboxes = document.querySelectorAll('.dept-checkbox');
-    deptCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                deptCheckboxes.forEach(cb => {
-                    if (cb !== this) cb.checked = false;
-                });
-            }
+    if (deptCheckboxes.length > 0) {
+        deptCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    deptCheckboxes.forEach(cb => {
+                        if (cb !== this) cb.checked = false;
+                    });
+                }
+            });
         });
-    });
+    }
 
-    // Add clear data button functionality
-    document.getElementById('clearDataButton').addEventListener('click', clearData);
+    // Add clear data button functionality if button exists
+    const clearDataButton = document.getElementById('clearDataButton');
+    if (clearDataButton) {
+        clearDataButton.addEventListener('click', clearData);
+    }
 });
 
 function submitForm(e) {
@@ -111,6 +127,8 @@ function loadDelays() {
 
 function updateDepartmentTables(data) {
     const container = document.getElementById('departmentTables');
+    if (!container) return;
+    
     container.innerHTML = '';
 
     for (const [dept, info] of Object.entries(data)) {
@@ -168,9 +186,11 @@ function updateChart(data) {
     const values = labels.map(dept => data[dept].total_time);
 
     const chart = Chart.getChart('delayChart');
-    chart.data.labels = labels;
-    chart.data.datasets[0].data = values;
-    chart.update();
+    if (chart) {
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = values;
+        chart.update();
+    }
 }
 
 function openContestModal(delayId) {
