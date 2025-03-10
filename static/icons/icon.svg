@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#4a6edb;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1d3a8a;stop-opacity:1" />
+    <linearGradient id="gradientMain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4287f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1b4480;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="prismGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#54a0ff;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#0984e3;stop-opacity:0.7" />
+    </linearGradient>
+    <linearGradient id="prismGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#72c8ff;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#12a7ff;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="prismGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a0d8ff;stop-opacity:0.7" />
+      <stop offset="100%" style="stop-color:#48b9ff;stop-opacity:0.5" />
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="120" fill="url(#gradient)"/>
-  <path d="M140 120 L140 392 L220 392 L220 270 L320 270 L320 200 L220 200 L220 190 L340 190 L340 120 Z" fill="white"/>
-  <!-- Prism-like element -->
-  <polygon points="350,150 420,200 420,340 350,390" fill="rgba(255,255,255,0.8)" />
-  <polygon points="350,150 350,390 330,360 330,180" fill="rgba(255,255,255,0.4)" />
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="100" fill="url(#gradientMain)"/>
+  
+  <!-- Prism shape -->
+  <g transform="translate(100, 60) scale(0.95)">
+    <!-- Prism face 1 (front) -->
+    <polygon points="40,100 200,100 160,350 0,350" fill="url(#prismGradient1)" />
+    
+    <!-- Prism face 2 (side) -->
+    <polygon points="200,100 300,150 260,400 160,350" fill="url(#prismGradient2)" />
+    
+    <!-- Prism face 3 (top) -->
+    <polygon points="40,100 200,100 300,150 140,150" fill="url(#prismGradient3)" />
+    
+    <!-- Letter P -->
+    <path d="M70,140 L70,310 L130,310 L130,240 L180,240 C200,240 220,230 230,210 C240,190 240,170 230,150 C220,130 200,120 180,120 L70,140 Z" 
+          fill="white" opacity="0.9" />
+    <path d="M100,170 L100,210 L160,210 C165,210 170,205 170,200 C170,190 160,180 150,180 L100,170 Z" 
+          fill="url(#gradientMain)" opacity="0.9" />
+  </g>
 </svg>
