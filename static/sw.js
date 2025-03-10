@@ -5,12 +5,12 @@ const urlsToCache = [
   '/',
   '/static/css/custom.css',
   '/static/js/main.js',
-  '/static/icons/icon.svg',
   '/static/manifest.json',
   'https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css',
   'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
-  'https://cdn.jsdelivr.net/npm/chart.js'
+  'https://cdn.jsdelivr.net/npm/chart.js',
+  'https://cdn.discordapp.com/attachments/1005416721835900990/1348753341655552080/breez.blox_vector_logo_of_a_prism_depicting_the_letter_P_in_mon_c9346d2b-23db-4903-88b5-aa9e1cb461e4.png?ex=67d09bef&is=67cf4a6f&hm=b777f1d157278f3cdbcaec5220d3dc12410f86d5e6fc10096c382a84be903423&'
 ];
 
 self.addEventListener('install', event => {

@@ -9,9 +9,9 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/static/icons/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "https://cdn.discordapp.com/attachments/1005416721835900990/1348753341655552080/breez.blox_vector_logo_of_a_prism_depicting_the_letter_P_in_mon_c9346d2b-23db-4903-88b5-aa9e1cb461e4.png?ex=67d09bef&is=67cf4a6f&hm=b777f1d157278f3cdbcaec5220d3dc12410f86d5e6fc10096c382a84be903423&",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
