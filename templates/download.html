@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Download PRISM Project Files{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Download PRISM Project Files</h2>
+                </div>
+                <div class="card-body">
+                    <p class="lead">
+                        Below you can download all the necessary files to upload to your GitHub repository.
+                    </p>
+                    
+                    <div class="alert alert-info">
+                        <h5>GitHub Repository Instructions</h5>
+                        <ol>
+                            <li>Download all the files below</li>
+                            <li>Create a new repository on GitHub at <a href="https://github.com/new" target="_blank">https://github.com/new</a></li>
+                            <li>Name your repository "PRISM"</li>
+                            <li>Click on "Add file" → "Upload files"</li>
+                            <li>Drag and drop all the downloaded files</li>
+                            <li>Add a commit message (e.g., "Initial commit of Production Delay Tracker PWA")</li>
+                            <li>Click "Commit changes"</li>
+                        </ol>
+                    </div>
+                    
+                    <h4 class="mt-4">Core Files</h4>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            app.py
+                            <a href="/download/app.py" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            config.py
+                            <a href="/download/config.py" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            main.py
+                            <a href="/download/main.py" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            models.py
+                            <a href="/download/models.py" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            utils.py
+                            <a href="/download/utils.py" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                    </ul>
+                    
+                    <h4 class="mt-4">Template Files</h4>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            templates/base.html
+                            <a href="/download/templates/base.html" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            templates/index.html
+                            <a href="/download/templates/index.html" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                    </ul>
+                    
+                    <h4 class="mt-4">Static Files</h4>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            static/css/custom.css
+                            <a href="/download/static/css/custom.css" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            static/js/main.js
+                            <a href="/download/static/js/main.js" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            static/manifest.json
+                            <a href="/download/static/manifest.json" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            static/sw.js
+                            <a href="/download/static/sw.js" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                    </ul>
+                    
+                    <h4 class="mt-4">Repository Files</h4>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            .gitignore
+                            <a href="/download/.gitignore" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            LICENSE
+                            <a href="/download/LICENSE" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            README.md
+                            <a href="/download/README.md" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            requirements.txt
+                            <a href="/download/requirements.txt" class="btn btn-sm btn-primary" download>Download</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

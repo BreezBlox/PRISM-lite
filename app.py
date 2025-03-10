@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 import pandas as pd
-from flask import Flask, render_template, request, jsonify, session, send_file
+from flask import Flask, render_template, request, jsonify, session, send_file, Response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 import io
@@ -144,6 +144,75 @@ def clear_data():
         return jsonify({'status': 'success'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
+
+@app.route('/download')
+def download_page():
+    return render_template('download.html')
+
+@app.route('/download/<path:filename>')
+def download_file(filename):
+    try:
+        with open(filename, 'r') as file:
+            content = file.read()
+            if filename.endswith('.py'):
+                response = Response(content, mimetype='text/plain')
+            elif filename.endswith('.html'):
+                response = Response(content, mimetype='text/html')
+            elif filename.endswith('.css'):
+                response = Response(content, mimetype='text/css')
+            elif filename.endswith('.js'):
+                response = Response(content, mimetype='application/javascript')
+            elif filename.endswith('.json'):
+                response = Response(content, mimetype='application/json')
+            else:
+                response = Response(content, mimetype='text/plain')
+            
+            response.headers["Content-Disposition"] = f"attachment; filename={os.path.basename(filename)}"
+            return response
+    except Exception as e:
+        return f"Error: {str(e)}", 404
+
+@app.route('/download/LICENSE')
+def download_license():
+    license_text = """MIT License
+
+Copyright (c) 2025 BreezBlox
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE."""
+    response = Response(license_text, mimetype='text/plain')
+    response.headers["Content-Disposition"] = "attachment; filename=LICENSE"
+    return response
+
+@app.route('/download/requirements.txt')
+def download_requirements():
+    requirements = """email-validator==2.1.1
+flask==3.0.0
+flask-sqlalchemy==3.1.1
+gunicorn==21.2.0
+pandas==2.1.3
+psycopg2-binary==2.9.9
+python-dotenv==1.0.0
+requests==2.31.0
+sqlalchemy==2.0.23"""
+    response = Response(requirements, mimetype='text/plain')
+    response.headers["Content-Disposition"] = "attachment; filename=requirements.txt"
+    return response
 
 with app.app_context():
     db.create_all()
