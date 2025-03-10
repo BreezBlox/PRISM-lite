@@ -10,8 +10,7 @@ const urlsToCache = [
   'https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css',
   'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
-  'https://cdn.jsdelivr.net/npm/chart.js',
-  'https://cdn.discordapp.com/attachments/1005416721835900990/1348753341655552080/breez.blox_vector_logo_of_a_prism_depicting_the_letter_P_in_mon_c9346d2b-23db-4903-88b5-aa9e1cb461e4.png'
+  'https://cdn.jsdelivr.net/npm/chart.js'
 ];
 
 self.addEventListener('install', event => {
@@ -92,8 +91,8 @@ self.addEventListener('activate', event => {
 
 // Handle offline functionality
 self.addEventListener('fetch', event => {
-  // Skip cross-origin requests
-  if (event.request.mode === 'navigate' && !navigator.onLine) {
+  // Check if this is a navigation request and we're offline
+  if (event.request.mode === 'navigate' && typeof navigator !== 'undefined' && navigator.onLine === false) {
     event.respondWith(
       caches.match(event.request).then(response => {
         return response || caches.match('/');
