@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Load initial data
-    loadDelays();
+    loadIssues();
 
     // Form submission handler
     document.getElementById('delayForm').addEventListener('submit', submitForm);
@@ -47,7 +47,7 @@ function submitForm(e) {
     e.preventDefault();
     const formData = new FormData(this);
 
-    fetch('/submit_delay', {
+    fetch('/submit_issue', {
         method: 'POST',
         body: formData
     })
@@ -56,15 +56,15 @@ function submitForm(e) {
         if (data.status === 'success') {
             this.reset();
             document.getElementById('date').valueAsDate = new Date();
-            loadDelays();
+            loadIssues();
         } else {
-            alert('Error submitting delay: ' + data.message);
+            alert('Error submitting issue: ' + data.message);
         }
     });
 }
 
-function loadDelays() {
-    fetch('/get_delays')
+function loadIssues() {
+    fetch('/get_issues')
         .then(response => response.json())
         .then(data => {
             updateDepartmentTables(data);
@@ -146,7 +146,7 @@ function submitContest() {
     const newDepartment = document.getElementById('new_department').value;
     const reason = document.getElementById('contest_reason').value;
 
-    fetch('/contest_delay', {
+    fetch('/contest_issue', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -161,9 +161,9 @@ function submitContest() {
     .then(data => {
         if (data.status === 'success') {
             bootstrap.Modal.getInstance(document.getElementById('contestModal')).hide();
-            loadDelays();
+            loadIssues();
         } else {
-            alert('Error contesting delay: ' + data.message);
+            alert('Error contesting issue: ' + data.message);
         }
     });
 }
@@ -185,7 +185,7 @@ function clearData() {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                loadDelays();
+                loadIssues();
             } else {
                 alert('Error clearing data: ' + data.message);
             }
