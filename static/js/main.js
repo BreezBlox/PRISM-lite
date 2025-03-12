@@ -41,48 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form submission handler
     document.getElementById('delayForm').addEventListener('submit', submitForm);
-
-
-    // Handle Other department input
-    const otherCheckbox = document.getElementById('dept_Other');
-    if (otherCheckbox) {
-        otherCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                const otherDept = prompt('Please enter the department name:');
-                if (otherDept) {
-                    this.value = otherDept;
-                } else {
-                    this.checked = false;
-                }
-            }
-        });
-    }
-
-    // Ensure only one department checkbox can be selected at a time
-    const deptCheckboxes = document.querySelectorAll('.dept-checkbox');
-    deptCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                deptCheckboxes.forEach(cb => {
-                    if (cb !== this) cb.checked = false;
-                });
-            }
-        });
-    });
-
-    // Add clear data button functionality
-    document.getElementById('clearDataButton').addEventListener('click', clearData);
 });
 
 function submitForm(e) {
     e.preventDefault();
     const formData = new FormData(this);
-
-    // Handle Other department
-    const otherCheckbox = document.getElementById('dept_Other');
-    if (otherCheckbox && otherCheckbox.checked && otherCheckbox.value) {
-        formData.append('dept_Other_value', otherCheckbox.value);
-    }
 
     fetch('/submit_delay', {
         method: 'POST',
