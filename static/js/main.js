@@ -96,7 +96,7 @@ function updateDepartmentTables(data) {
                             <th>Job Number</th>
                             <th>Part Number</th>
                             <th>Description</th>
-                            <th>Delay Time</th>
+                            <th>Issue Time</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
