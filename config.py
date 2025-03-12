@@ -15,4 +15,4 @@ DEPARTMENTS = [
 MISTRAL_API_KEY = os.environ.get('MISTRAL_API_KEY', 'dummy-key')
 MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
 
-DATABASE_URL = "sqlite:///production_delays.db"
+DATABASE_URL = "sqlite:///production_issues.db"

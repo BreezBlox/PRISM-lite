@@ -8,7 +8,7 @@ class Delay(db.Model):
     date = db.Column(db.Date, default=datetime.utcnow)
     discovery_department = db.Column(db.String(100))
     description = db.Column(db.Text)
-    delay_time = db.Column(db.Float)
+    delay_time = db.Column(db.Float)  # Keeping field name for database compatibility
     origin_department = db.Column(db.String(100))
     manually_classified = db.Column(db.Boolean, default=False)
     

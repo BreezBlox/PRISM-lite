@@ -93,7 +93,7 @@ def export_csv():
                 'job#': [d.job_number for d in dept_issues],
                 'part#': [d.part_number for d in dept_issues],
                 dept: [d.description for d in dept_issues],  # Department name as column header
-                'hrs': [d.delay_time for d in dept_issues]  # Database field name is still delay_time
+                'hrs': [d.delay_time for d in dept_issues]  # Using the database field 'delay_time' but displayed as 'Issue Time'
             }
             departments_data[dept] = pd.DataFrame(df_data)
 

@@ -48,9 +48,9 @@ self.addEventListener('fetch', event => {
             caches.open(CACHE_NAME)
               .then(cache => {
                 // Don't cache API responses or potentially dynamic content
-                if (!event.request.url.includes('/get_delays') && 
-                    !event.request.url.includes('/submit_delay') &&
-                    !event.request.url.includes('/contest_delay') &&
+                if (!event.request.url.includes('/get_issues') && 
+                    !event.request.url.includes('/submit_issue') &&
+                    !event.request.url.includes('/contest_issue') &&
                     !event.request.url.includes('/export_csv') &&
                     !event.request.url.includes('/clear_data')) {
                   cache.put(event.request, responseToCache);

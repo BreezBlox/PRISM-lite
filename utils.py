@@ -2,11 +2,11 @@ import requests
 from config import MISTRAL_API_KEY, MISTRAL_API_URL, DEPARTMENTS
 
 def classify_department(description):
-    """Use Mistral AI to classify the department based on delay description"""
-    prompt = f"""Given the following production delay description, determine which department is most likely responsible. 
+    """Use Mistral AI to classify the department based on issue description"""
+    prompt = f"""Given the following production issue description, determine which department is most likely responsible. 
     Choose from these departments: {', '.join(DEPARTMENTS)}
     
-    Delay description: {description}
+    Issue description: {description}
     
     Response format: Just return the department name, nothing else."""
 
