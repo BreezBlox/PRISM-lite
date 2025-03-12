@@ -1,7 +1,7 @@
 {
-  "name": "Production Delay Tracker",
-  "short_name": "Delay Tracker",
-  "description": "Track and analyze production delays with AI-driven classification",
+  "name": "PRISM - Production Root Issue Sorting Mechanism",
+  "short_name": "PRISM",
+  "description": "Track and analyze production issues with AI-driven classification",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#333333",
