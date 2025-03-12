@@ -1,0 +1,9 @@
+email-validator
+flask
+flask-sqlalchemy
+gunicorn
+pandas
+psycopg2-binary
+python-dotenv
+requests
+sqlalchemy
