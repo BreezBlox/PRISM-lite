@@ -67,7 +67,7 @@ def get_issues():
 @app.route('/contest_issue', methods=['POST'])
 def contest_issue():
     data = request.json
-    issue = Delay.query.get(data['delay_id'])
+    issue = Delay.query.get(data['issue_id'])
     if issue:
         issue.previous_department = issue.origin_department
         issue.origin_department = data['new_department']

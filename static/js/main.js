@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('date').valueAsDate = new Date();
 
     // Initialize the impact chart
-    let delayChart = new Chart(document.getElementById('delayChart'), {
+    let issueChart = new Chart(document.getElementById('issueChart'), {
         type: 'bar',
         data: {
             labels: [],
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadIssues();
 
     // Form submission handler
-    document.getElementById('delayForm').addEventListener('submit', submitForm);
+    document.getElementById('issueForm').addEventListener('submit', submitForm);
 });
 
 function submitForm(e) {
@@ -130,7 +130,7 @@ function updateChart(data) {
     const labels = Object.keys(data);
     const values = labels.map(dept => data[dept].total_time);
 
-    const chart = Chart.getChart('delayChart');
+    const chart = Chart.getChart('issueChart');
     chart.data.labels = labels;
     chart.data.datasets[0].data = values;
     chart.update();
