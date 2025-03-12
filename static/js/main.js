@@ -77,7 +77,7 @@ function updateDepartmentTables(data) {
     container.innerHTML = '';
 
     for (const [dept, info] of Object.entries(data)) {
-        const delays = info.delays;
+        const issues = info.issues;
         const totalTime = info.total_time;
 
         const section = document.createElement('div');
@@ -101,17 +101,17 @@ function updateDepartmentTables(data) {
                         </tr>
                     </thead>
                     <tbody>
-                        ${delays.map(delay => `
+                        ${issues.map(issue => `
                             <tr>
-                                <td>${delay.date}</td>
-                                <td>${delay.discovery_department}</td>
-                                <td>${delay.job_number}</td>
-                                <td>${delay.part_number || '-'}</td>
-                                <td>${delay.description}</td>
-                                <td>${delay.delay_time.toFixed(1)}</td>
+                                <td>${issue.date}</td>
+                                <td>${issue.discovery_department}</td>
+                                <td>${issue.job_number}</td>
+                                <td>${issue.part_number || '-'}</td>
+                                <td>${issue.description}</td>
+                                <td>${issue.delay_time.toFixed(1)}</td>
                                 <td>
                                     <button class="btn btn-sm btn-outline-warning" 
-                                            onclick="openContestModal(${delay.id})">
+                                            onclick="openContestModal(${issue.id})">
                                         Contest
                                     </button>
                                 </td>
@@ -136,13 +136,13 @@ function updateChart(data) {
     chart.update();
 }
 
-function openContestModal(delayId) {
-    document.getElementById('contest_delay_id').value = delayId;
+function openContestModal(issueId) {
+    document.getElementById('contest_issue_id').value = issueId;
     new bootstrap.Modal(document.getElementById('contestModal')).show();
 }
 
 function submitContest() {
-    const delayId = document.getElementById('contest_delay_id').value;
+    const issueId = document.getElementById('contest_issue_id').value;
     const newDepartment = document.getElementById('new_department').value;
     const reason = document.getElementById('contest_reason').value;
 
@@ -152,7 +152,7 @@ function submitContest() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            delay_id: delayId,
+            issue_id: issueId,
             new_department: newDepartment,
             reason: reason
         })

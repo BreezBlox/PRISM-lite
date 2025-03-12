@@ -23,8 +23,8 @@ from models import Delay
 def index():
     return render_template('index.html', departments=DEPARTMENTS)
 
-@app.route('/submit_delay', methods=['POST'])
-def submit_delay():
+@app.route('/submit_issue', methods=['POST'])
+def submit_issue():
     try:
         data = request.form
 
@@ -49,8 +49,8 @@ def submit_delay():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
 
-@app.route('/get_delays')
-def get_delays():
+@app.route('/get_issues')
+def get_issues():
     issues = Delay.query.all()
     issues_by_dept = {}
     
@@ -58,14 +58,14 @@ def get_delays():
         dept_issues = [d.to_dict() for d in issues if d.origin_department == dept]
         total_time = sum(d['delay_time'] for d in dept_issues)
         issues_by_dept[dept] = {
-            'delays': dept_issues,
+            'issues': dept_issues,
             'total_time': total_time
         }
     
     return jsonify(issues_by_dept)
 
-@app.route('/contest_delay', methods=['POST'])
-def contest_delay():
+@app.route('/contest_issue', methods=['POST'])
+def contest_issue():
     data = request.json
     issue = Delay.query.get(data['delay_id'])
     if issue:
