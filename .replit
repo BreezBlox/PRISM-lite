@@ -24,6 +24,24 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "PRISM App"
+
+[[workflows.workflow]]
+name = "PRISM App"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python main.py"
 waitForPort = 5000
 
 [[ports]]
