@@ -89,14 +89,6 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Handle offline functionality
-self.addEventListener('fetch', event => {
-  // Check if this is a navigation request and we're offline
-  if (event.request.mode === 'navigate' && typeof navigator !== 'undefined' && navigator.onLine === false) {
-    event.respondWith(
-      caches.match(event.request).then(response => {
-        return response || caches.match('/');
-      })
-    );
-  }
-});
+// We have duplicate event listeners for 'fetch'
+// Remove this second one as it's causing errors
+// The first fetch event listener above (line 26) already handles offline functionality
