@@ -56,7 +56,7 @@ def get_issues():
     
     for dept in DEPARTMENTS:
         dept_issues = [d.to_dict() for d in issues if d.origin_department == dept]
-        total_time = sum(d['delay_time'] for d in dept_issues)
+        total_time = sum(d['issue_time'] for d in dept_issues)
         issues_by_dept[dept] = {
             'issues': dept_issues,
             'total_time': total_time

@@ -25,7 +25,7 @@ class Delay(db.Model):
             'date': self.date.strftime('%Y-%m-%d'),
             'discovery_department': self.discovery_department,
             'description': self.description,
-            'delay_time': self.delay_time,
+            'issue_time': self.delay_time,
             'origin_department': self.origin_department,
             'contested': self.contested,
             'contest_reason': self.contest_reason
