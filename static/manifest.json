@@ -1,6 +1,6 @@
 {
-  "name": "PRISM - Production Root Issue Sorting Mechanism",
-  "short_name": "PRISM",
+  "name": "PRISM-lite - Production Root Issue Sorting Mechanism",
+  "short_name": "PRISM-lite",
   "description": "Track and analyze production issues with AI-driven classification",
   "start_url": "/",
   "display": "standalone",

@@ -1,6 +1,6 @@
-// Service Worker for PRISM (Production Root Issue Sorting Mechanism) PWA
+// Service Worker for PRISM-lite (Production Root Issue Sorting Mechanism) PWA
 
-const CACHE_NAME = 'prism-app-v1';
+const CACHE_NAME = 'prism-lite-app-v1';
 const urlsToCache = [
   '/',
   '/static/css/custom.css',
