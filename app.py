@@ -17,7 +17,7 @@ app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key")
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 db.init_app(app)
 
-from models import Delay
+from models import Delay as Issue
 
 @app.route('/')
 def index():
@@ -31,13 +31,13 @@ def submit_issue():
         # All departments are now classified by AI
         origin_dept = classify_department(data['description'])
         
-        issue = Delay(
+        issue = Issue(
             job_number=data['job_number'],
             part_number=data['part_number'],
             date=datetime.strptime(data['date'], '%Y-%m-%d'),
             discovery_department=data['discovery_department'],
             description=data['description'],
-            delay_time=float(data['delay_time']),
+            delay_time=float(data['issue_time']),
             origin_department=origin_dept,
             manually_classified=False
         )
@@ -51,7 +51,7 @@ def submit_issue():
 
 @app.route('/get_issues')
 def get_issues():
-    issues = Delay.query.all()
+    issues = Issue.query.all()
     issues_by_dept = {}
     
     for dept in DEPARTMENTS:
@@ -67,7 +67,7 @@ def get_issues():
 @app.route('/contest_issue', methods=['POST'])
 def contest_issue():
     data = request.json
-    issue = Delay.query.get(data['issue_id'])
+    issue = Issue.query.get(data['issue_id'])
     if issue:
         issue.previous_department = issue.origin_department
         issue.origin_department = data['new_department']
@@ -79,7 +79,7 @@ def contest_issue():
 
 @app.route('/export_csv')
 def export_csv():
-    issues = Delay.query.all()
+    issues = Issue.query.all()
     departments_data = {}
 
     # Group issues by department
@@ -130,7 +130,7 @@ def export_csv():
 @app.route('/clear_data', methods=['POST'])
 def clear_data():
     try:
-        Delay.query.delete()
+        Issue.query.delete()
         db.session.commit()
         return jsonify({'status': 'success'})
     except Exception as e:

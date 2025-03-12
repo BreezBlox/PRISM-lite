@@ -108,7 +108,7 @@ function updateDepartmentTables(data) {
                                 <td>${issue.job_number}</td>
                                 <td>${issue.part_number || '-'}</td>
                                 <td>${issue.description}</td>
-                                <td>${issue.delay_time.toFixed(1)}</td>
+                                <td>${issue.issue_time.toFixed(1)}</td>
                                 <td>
                                     <button class="btn btn-sm btn-outline-warning" 
                                             onclick="openContestModal(${issue.id})">
