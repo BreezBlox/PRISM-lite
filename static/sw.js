@@ -1,6 +1,6 @@
-// Service Worker for Production Delay Tracker PWA
+// Service Worker for PRISM (Production Root Issue Sorting Mechanism) PWA
 
-const CACHE_NAME = 'delay-tracker-v1';
+const CACHE_NAME = 'prism-app-v1';
 const urlsToCache = [
   '/',
   '/static/css/custom.css',

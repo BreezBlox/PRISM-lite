@@ -9,13 +9,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set today's date by default
     document.getElementById('date').valueAsDate = new Date();
 
-    // Initialize the delay chart
+    // Initialize the impact chart
     let delayChart = new Chart(document.getElementById('delayChart'), {
         type: 'bar',
         data: {
             labels: [],
             datasets: [{
-                label: 'Total Delay Time (hours)',
+                label: 'Total Impact Time (hours)',
                 data: [],
                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
                 borderColor: 'rgba(54, 162, 235, 1)',

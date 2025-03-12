@@ -31,7 +31,7 @@ def submit_delay():
         # All departments are now classified by AI
         origin_dept = classify_department(data['description'])
         
-        delay = Delay(
+        issue = Delay(
             job_number=data['job_number'],
             part_number=data['part_number'],
             date=datetime.strptime(data['date'], '%Y-%m-%d'),
@@ -42,7 +42,7 @@ def submit_delay():
             manually_classified=False
         )
 
-        db.session.add(delay)
+        db.session.add(issue)
         db.session.commit()
 
         return jsonify({'status': 'success'})
@@ -51,49 +51,49 @@ def submit_delay():
 
 @app.route('/get_delays')
 def get_delays():
-    delays = Delay.query.all()
-    delays_by_dept = {}
+    issues = Delay.query.all()
+    issues_by_dept = {}
     
     for dept in DEPARTMENTS:
-        dept_delays = [d.to_dict() for d in delays if d.origin_department == dept]
-        total_time = sum(d['delay_time'] for d in dept_delays)
-        delays_by_dept[dept] = {
-            'delays': dept_delays,
+        dept_issues = [d.to_dict() for d in issues if d.origin_department == dept]
+        total_time = sum(d['delay_time'] for d in dept_issues)
+        issues_by_dept[dept] = {
+            'delays': dept_issues,
             'total_time': total_time
         }
     
-    return jsonify(delays_by_dept)
+    return jsonify(issues_by_dept)
 
 @app.route('/contest_delay', methods=['POST'])
 def contest_delay():
     data = request.json
-    delay = Delay.query.get(data['delay_id'])
-    if delay:
-        delay.previous_department = delay.origin_department
-        delay.origin_department = data['new_department']
-        delay.contested = True
-        delay.contest_reason = data['reason']
+    issue = Delay.query.get(data['delay_id'])
+    if issue:
+        issue.previous_department = issue.origin_department
+        issue.origin_department = data['new_department']
+        issue.contested = True
+        issue.contest_reason = data['reason']
         db.session.commit()
         return jsonify({'status': 'success'})
-    return jsonify({'status': 'error', 'message': 'Delay not found'})
+    return jsonify({'status': 'error', 'message': 'Issue not found'})
 
 @app.route('/export_csv')
 def export_csv():
-    delays = Delay.query.all()
+    issues = Delay.query.all()
     departments_data = {}
 
-    # Group delays by department
+    # Group issues by department
     for dept in DEPARTMENTS:
-        dept_delays = [d for d in delays if d.origin_department == dept]
-        if dept_delays:
+        dept_issues = [d for d in issues if d.origin_department == dept]
+        if dept_issues:
             # Create DataFrame for this department
             df_data = {
-                'date': [d.date.strftime('%d-%m') for d in dept_delays],
-                'discovered in': [d.discovery_department for d in dept_delays],
-                'job#': [d.job_number for d in dept_delays],
-                'part#': [d.part_number for d in dept_delays],
-                dept: [d.description for d in dept_delays],  # Department name as column header
-                'hrs': [d.delay_time for d in dept_delays]
+                'date': [d.date.strftime('%d-%m') for d in dept_issues],
+                'discovered in': [d.discovery_department for d in dept_issues],
+                'job#': [d.job_number for d in dept_issues],
+                'part#': [d.part_number for d in dept_issues],
+                dept: [d.description for d in dept_issues],  # Department name as column header
+                'hrs': [d.delay_time for d in dept_issues]
             }
             departments_data[dept] = pd.DataFrame(df_data)
 
@@ -116,7 +116,7 @@ def export_csv():
             io.BytesIO(output.getvalue().encode('utf-8')),
             mimetype='text/csv',
             as_attachment=True,
-            download_name='delays.csv'
+            download_name='production_issues.csv'
         )
     else:
         # Return empty CSV if no data
@@ -124,7 +124,7 @@ def export_csv():
             io.BytesIO('No data available'.encode('utf-8')),
             mimetype='text/csv',
             as_attachment=True,
-            download_name='delays.csv'
+            download_name='production_issues.csv'
         )
 
 @app.route('/clear_data', methods=['POST'])
